@@ -44,6 +44,24 @@ void Widget::setB(float val)
     updateGL();
 }
 
+void Widget::DrawScreenLine(float x1, float y1, float x2, float y2)
+{
+    glBegin(GL_LINES);
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+    glEnd();
+}
+
+void Widget::DrawCoords()
+{
+    DrawScreenLine(-1, 0, 1, 0);
+    DrawScreenLine(0, -1, 0, 1);
+    DrawScreenLine(0.04, 0.96, 0, 1);
+    DrawScreenLine(-0.04, 0.96, 0, 1);
+    DrawScreenLine(0.96, 0.04, 1, 0);
+    DrawScreenLine(0.96, -0.04, 1, 0);
+}
+
 void Widget::DrawCurve(int stepCount)
 {
     float x = -a;
@@ -69,5 +87,6 @@ void Widget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1,1,1);
     max = std::max(a, b);
+    DrawCoords();
     DrawCurve(1000);
 }

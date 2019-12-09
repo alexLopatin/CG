@@ -26,6 +26,8 @@ private:
     void initializeGL();
     void DrawCurve(int stepCount);
     void DrawLine(float x1, float y1, float x2, float y2);
+    void DrawScreenLine(float x1, float y1, float x2, float y2);
+    void DrawCoords();
     Ui::Widget *ui;
 };
 
