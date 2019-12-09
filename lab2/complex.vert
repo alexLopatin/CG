@@ -35,7 +35,6 @@ void main()
     //gl_Position.x = gl_Position.x * cos(t);
     float d = distance(gl_Position.xyz, lightPos);
     vec3 L = pos - lightPos;
-    L = normalize(L);
     float dotPr = dot(normal, L);
     if(dotPr < 0.2f)
     	dotPr = 0.2f;

@@ -23,9 +23,6 @@ void Widget::initializeGL()
     setupData();
     SetupShaders();
     SetProjection(0);
-    glClearDepthf(100);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_CLAMP);
     startTimer(30);
 
@@ -78,7 +75,7 @@ void Widget::wheelEvent(QWheelEvent *event)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     double sc = scale;
-    glOrtho(-sc, sc, -sc, sc, sc, -sc);
+    glOrtho(sc, sc, -sc, sc, sc, -sc);
     std::array<GLfloat, 16> projection;
     glGetFloatv(GL_PROJECTION_MATRIX, projection.data());
     glUniformMatrix4fv(glGetUniformLocation(progId, "ProjectionMatrix"), 1, GL_FALSE, projection.data());
@@ -101,10 +98,6 @@ void Widget::SetProjection(int type)
     glUniformMatrix4fv(glGetUniformLocation(progId, "ProjectionMatrix"), 1, GL_FALSE, projection.data());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    if(type == 1) {
-        glRotatef(-35.264f, 1.0f, 0.0f, 0.0f);
-        glRotatef(-45.0f, 0.0f, 1.0f, 0.0f);
-    }
     glGetFloatv(GL_MODELVIEW_MATRIX, projection.data());
     glUniformMatrix4fv(glGetUniformLocation(progId, "ModelViewMatrix"), 1, GL_FALSE, projection.data());
 }
@@ -200,7 +193,7 @@ void Widget::setupData()
         0, 0, -1.0f,
         0, 0, -1.0f
     };
-    glBufferData(GL_ARRAY_BUFFER, 216 * sizeof(GLfloat),
+    glBufferData(GL_ARRAY_BUFFER, 172 * sizeof(GLfloat),
     cube, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -216,10 +209,7 @@ void Widget::timerEvent(QTimerEvent*)
 
 void Widget::resizeGL(int w, int h)
 {
-    if(w > h)
-        glViewport(0,-(w-h)/2,w,w);
-    else
-        glViewport((w-h)/2,0,h,h);
+    glViewport(0,0,w,h);
 }
 
 void Widget::mouseMoveEvent(QMouseEvent * event)
@@ -227,15 +217,12 @@ void Widget::mouseMoveEvent(QMouseEvent * event)
     if(event->globalX()-mouseX > 0)
         angleY += 2;
     if(event->globalX()-mouseX < 0)
-        angleY -= 2;
-    if( abs(angleY) >=360)
-        angleY = 0;
+        angleX -= 2;
     if(event->globalY()-mouseY > 0)
         angleX += 2;
     if(event->globalY()-mouseY < 0)
-        angleX -= 2;
-    if( abs(angleX) >=360)
-        angleX = 0;
+        angleY -= 2;
+
     mouseX = event->globalX();
     mouseY = event->globalY();
     updateGL();
