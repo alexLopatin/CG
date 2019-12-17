@@ -29,14 +29,9 @@ void main()
         pos.z,
         1.0);
     gl_Position =  gl_Position * rotX * rotY;
-    vec4 Normal4 = vec4(1,0,0,0);
-    //Normal4 = ModelViewMatrix* ProjectionMatrix * Normal4 * rotX * rotY;
-    Normal4 = normalize(Normal4);
-    //gl_Position.x = gl_Position.x * cos(t);
-    float d = distance(gl_Position.xyz, lightPos);
     vec3 L = -pos +lightPos;
     L = normalize(L);
-    float dotPr = dot(normal, L);
+    float dotPr = dot(gl_Normal, L);
     if(dotPr < 0.2f)
     	dotPr = 0.2f;
     gl_FrontColor = dotPr *vec4(lightColor, 1.0)*GlowPow;
